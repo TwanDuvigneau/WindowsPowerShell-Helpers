@@ -2,7 +2,6 @@ Import-Module ImportExcel
 
 $ExcelPath = 'C:\temp\userlicenses.xlsx'
 
-Connect-AzureAD
 Connect-MsolService
 
 $Sku = @{
@@ -161,6 +160,8 @@ Foreach ($User in $Users) {
 
 $LicenseKeys.RemoveAt($LicenseKeys.IndexOf('Name'))
 $LicenseKeys.RemoveAt($LicenseKeys.IndexOf('UserName'))
+$LicenseKeys.RemoveAt($LicenseKeys.IndexOf('Department'))
+$LicenseKeys.RemoveAt($LicenseKeys.IndexOf('Function'))
 
 ForEach($license in $LicenseKeys) {
    

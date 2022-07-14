@@ -147,11 +147,13 @@ Foreach ($User in $Users) {
         $LicObj = @{
             Name          = $User.DisplayName
             UserName      = $User.UserPrincipalName
+            Department    = $User.Department
+            Function      = $User.Title
             "$($TextLic)" = $true
         }
 
         $LicenseResults += $LicObj
-        write-verbose -verbose $LicObj
+
     }
 }
 
@@ -168,9 +170,11 @@ ForEach($license in $LicenseKeys) {
     
     $licenseTable | ForEach-Object {
         $Licensetocsv += [pscustomobject] @{
-            UserName = $_.UserName
-            Name     = $_.Name
-            License  = $license
+            UserName   = $_.UserName
+            Name       = $_.Name
+            Department = $_.Department
+            Function   = $_.Function
+            License    = $license
         }
     }
 

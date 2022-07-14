@@ -1,3 +1,6 @@
+#Install-Module ImportExcel
+#Install-Module MSOnline
+
 Import-Module ImportExcel
 
 $ExcelPath = 'C:\temp\userlicenses.xlsx'

@@ -46,7 +46,7 @@ try {
 			}
 
 			if (-Not($dryRun -eq $True)) { 
-				Restart-AzVM -id $VM.id
+				[void]Restart-AzVM -id $VM.id
 			} else {
 				write-verbose -verbose "Restart-AzVM -id $($VM.id)" -NoWait:$true
 			}

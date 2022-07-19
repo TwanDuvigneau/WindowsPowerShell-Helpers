@@ -42,11 +42,11 @@ try {
 			$VM = Get-AzVM -Name $VirtualMachineName
 			
 			if ($Null -eq $VM) {
-				Throw "Could not find virtual machine for $($VirtualMachineName)"
+				Throw "Could not find virtual machine for lookup value $($VirtualMachineName), check if the user principal has sufficient privileges"
 			}
 
 			if (-Not($dryRun -eq $True)) { 
-				Restart-AzVM -id $VM.ResourceID
+				Restart-AzVM -id $VM.id
 			} else {
 				write-verbose -verbose "Restart-AzVM -id $($VM.id)" -NoWait:$true
 			}

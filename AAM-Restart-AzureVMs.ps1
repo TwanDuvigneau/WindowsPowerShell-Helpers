@@ -18,7 +18,7 @@ Param
 $RestartedMachines = [Collections.Generic.List[PSCustomObject]]::new()
 
 try {
-	$ServicePrincipalConnection = Get-AutomationConnection -Name ''
+	$ServicePrincipalConnection = Get-AutomationConnection -Name 'acc-restartvm'
 
 	$ConnectAZ = @{
 		CertificateThumbprint = $ServicePrincipalConnection.CertificateThumbprint 
@@ -26,9 +26,10 @@ try {
 		Tenant                = $ServicePrincipalConnection.TenantID
 		ServicePrincipal      = $true
 	}
-	Connect-AzAccount
 
-	Set-AzContext -Subscription '897aea9a-c70e-4de2-897d-ed6cd82b6a82'
+	[void](Connect-AzAccount @ConnectAZ)
+
+	[void](Set-AzContext -Subscription $ServicePrincipalConnection.SubscriptionID)
 
 	Write-Verbose -Verbose "Successfully logged into Azure subscription using Az cmdlets..."
 
@@ -44,7 +45,7 @@ try {
 		Write-Verbose -Verbose "Processing VM $($VM.Name)..."
 
 		try {
-			#Restart-AzVM -id $VM.ResourceID -Force:$true
+			Restart-AzVM -id $VM.ResourceID -Force:$true
 
 			$RestartedMachines.Add([PSCustomObject]@{
 				Action   = "Restarting Virtual Machine"

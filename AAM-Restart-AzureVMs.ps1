@@ -12,7 +12,10 @@
 Param
 (
 	[Parameter (Mandatory= $true)]
-	[string[]] $VirtualMachines
+	[string[]] $VirtualMachines,
+
+	[Parameter(Mandatory= $false)]
+	[bool] $dryRun = $true
 )
 
 $RestartedMachines = [Collections.Generic.List[PSCustomObject]]::new()
@@ -29,27 +32,28 @@ try {
 
 	[void](Connect-AzAccount @ConnectAZ)
 
-	[void](Set-AzContext -Subscription $ServicePrincipalConnection.SubscriptionID)
-
 	Write-Verbose -Verbose "Successfully logged into Azure subscription using Az cmdlets..."
 
 	ForEach ($VirtualMachineName in $VirtualMachines) {
 
-		$GetVM = @{
-			ResourceType = "Microsoft.Compute/VirtualMachines"
-			Name         = $VirtualMachineName
-		}
-
-		$VM = Get-AzResource @GetVM
-
-		Write-Verbose -Verbose "Processing VM $($VM.Name)..."
+		Write-Verbose -Verbose "Processing VM $($VirtualMachineName)..."
 
 		try {
-			Restart-AzVM -id $VM.ResourceID -Force:$true
+			$VM = Get-AzVM -Name $VirtualMachineName
+			
+			if ($Null -eq $VM) {
+				Throw "Could not find virtual machine for $($VirtualMachineName)"
+			}
+
+			if (-Not($dryRun -eq $True)) { 
+				Restart-AzVM -id $VM.ResourceID
+			} else {
+				write-verbose -verbose "Restart-AzVM -id $($VM.id)" -NoWait:$true
+			}
 
 			$RestartedMachines.Add([PSCustomObject]@{
 				Action   = "Restarting Virtual Machine"
-				Resource = $($VM.Name)
+				Resource = $VM.Name
 				Message  = "Succesfully restarted virtual machine $($VM.Name)"
 				IsError  = $false
 			})
@@ -57,7 +61,7 @@ try {
 		} catch {
 			$RestartedMachines.Add([PSCustomObject]@{
 				Action   = "Restarting Virtual Machine"
-				Resource = $($VM.Name)
+				Resource = $VM.Name
 				Message  = "Failed to restart virtual machine $($VM.Name)"
 				IsError  = $false
 				Error    = $_.Exception

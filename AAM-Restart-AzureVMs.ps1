@@ -1,12 +1,18 @@
 <#
-.SYNOPSIS
-    Restart a Virtual Machine.
+	.SYNOPSIS
+		Restart a Virtual Machine.
 
-.DESCRIPTION
-    This runbook will restart a host or virtual machine without using a hybrid worker
+	.DESCRIPTION
+		This runbook will restart a host or virtual machine without using a hybrid worker
+	
+	.NOTES
+		AUTHOR: Twan Duvigneau
 
-.NOTES
-    AUTHOR: Twan Duvigneau
+	.COMPANYNAME
+        IT-Value B.V.
+
+	.VERSION
+        1.0
 #>
 
 Param

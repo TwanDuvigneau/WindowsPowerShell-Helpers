@@ -29,7 +29,7 @@ Import-Module Az.Accounts
 $RestartedMachines = [Collections.Generic.List[PSCustomObject]]::new()
 
 try {
-	$ServicePrincipalConnection = Get-AutomationConnection -Name 'acc-restartvm'
+	$ServicePrincipalConnection = Get-AutomationConnection -Name 'restartvm'
 
 	$ConnectAZ = @{
 		CertificateThumbprint = $ServicePrincipalConnection.CertificateThumbprint 

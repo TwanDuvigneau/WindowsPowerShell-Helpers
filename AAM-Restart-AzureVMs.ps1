@@ -24,6 +24,8 @@ Param
 	[bool] $dryRun = $true
 )
 
+Import-Module Az.Accounts
+
 $RestartedMachines = [Collections.Generic.List[PSCustomObject]]::new()
 
 try {

@@ -56,7 +56,7 @@ try {
 			if (-Not($dryRun -eq $True)) { 
 				[void](Restart-AzVM -id $VM.id)
 			} else {
-				write-verbose -verbose "Restart-AzVM -id $($VM.id)" -NoWait:$true
+				write-verbose -verbose "Restart-AzVM -id $($VM.id)"
 			}
 
 			$RestartedMachines.Add([PSCustomObject]@{
